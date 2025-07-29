@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catégories - Paris Encre</title>
+    <meta name="description" content="Découvrez notre large gamme d'imprimantes, consommables et accessoires informatiques des meilleures marques.">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .category-page {
+            padding: 2rem 0;
+            min-height: 60vh;
+        }
+        
+        .category-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .category-title {
+            color: var(--secondary);
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        
+        .filters-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        
+        .filters-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .filter-group label {
+            font-weight: bold;
+            color: var(--link);
+            font-size: 0.9rem;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            padding: 0.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .filter-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 1.5rem;
+        }
+        
+        .filter-btn:hover {
+            background: var(--primary);
+        }
+        
+        .products-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .product-brand {
+            color: var(--link);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-description {
+            color: var(--text-color);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        
+        .breadcrumb {
+            background: var(--light-bg);
+            padding: 1rem 0;
+        }
+        
+        .breadcrumb-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .breadcrumb-nav {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumb-nav a {
+            color: var(--link);
+            text-decoration: none;
+        }
+        
+        .breadcrumb-nav a:hover {
+            text-decoration: underline;
+        }
+        
+        .breadcrumb-separator {
+            color: var(--text-color);
+        }
+        
+        .results-info {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .category-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .category-title {
+                font-size: 2rem;
+            }
+            
+            .filters-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">Paris Encre</a>
+            
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Rechercher un produit, une marque..." id="searchInput">
+                <button class="search-btn" onclick="performSearch()">Rechercher</button>
+            </div>
+            
+            <div class="header-actions">
+                <a href="login.html" class="header-link" id="loginLink">Connexion</a>
+                <a href="account.html" class="header-link" id="accountLink" style="display: none;">Mon Compte</a>
+                <a href="cart.html" class="cart-icon">
+                    Panier
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation principale -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html">Accueil</a></li>
+                <li class="nav-item"><a href="category.html?cat=imprimantes">Imprimantes</a></li>
+                <li class="nav-item"><a href="category.html?cat=consommables">Consommables</a></li>
+                <li class="nav-item"><a href="category.html?cat=accessoires">Accessoires</a></li>
+                <li class="nav-item"><a href="category.html?cat=promotions">Promotions</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Fil d'Ariane -->
+    <div class="breadcrumb">
+        <div class="breadcrumb-container">
+            <nav class="breadcrumb-nav">
+                <a href="index.html">Accueil</a>
+                <span class="breadcrumb-separator">></span>
+                <span id="currentCategory">Catégorie</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <main class="category-page">
+        <div class="category-container">
+            <div class="category-header">
+                <h1 class="category-title" id="categoryTitle">Nos Produits</h1>
+            </div>
+
+            <!-- Filtres -->
+            <div class="filters-container">
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label for="brandFilter">Marque</label>
+                        <select id="brandFilter" onchange="filterProducts()">
+                            <option value="">Toutes les marques</option>
+                            <option value="Canon">Canon</option>
+                            <option value="HP">HP</option>
+                            <option value="Epson">Epson</option>
+                            <option value="Brother">Brother</option>
+                            <option value="Samsung">Samsung</option>
+                            <option value="Xerox">Xerox</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="minPrice">Prix min (€)</label>
+                        <input type="number" id="minPrice" placeholder="0" min="0" onchange="filterProducts()">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="maxPrice">Prix max (€)</label>
+                        <input type="number" id="maxPrice" placeholder="1000" min="0" onchange="filterProducts()">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="sortBy">Trier par</label>
+                        <select id="sortBy" onchange="filterProducts()">
+                            <option value="name">Nom</option>
+                            <option value="price-asc">Prix croissant</option>
+                            <option value="price-desc">Prix décroissant</option>
+                            <option value="brand">Marque</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="filter-btn" onclick="resetFilters()">Réinitialiser les filtres</button>
+            </div>
+
+            <!-- Informations sur les résultats -->
+            <div class="results-info" id="resultsInfo">
+                Chargement des produits...
+            </div>
+
+            <!-- Grille des produits -->
+            <div class="products-container" id="productsContainer">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Paris Encre</h3>
+                    <p>Votre spécialiste en imprimantes et consommables depuis plus de 10 ans. Nous proposons les meilleures marques au meilleur prix.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Nos Services</h3>
+                    <p><a href="#">Livraison rapide</a></p>
+                    <p><a href="#">Support technique</a></p>
+                    <p><a href="#">Garantie produits</a></p>
+                    <p><a href="#">Installation sur site</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Informations</h3>
+                    <p><a href="#">Conditions générales</a></p>
+                    <p><a href="#">Politique de confidentialité</a></p>
+                    <p><a href="#">Mentions légales</a></p>
+                    <p><a href="#">Contact</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>📧 contact@parisencre.fr</p>
+                    <p>📞 01 23 45 67 89</p>
+                    <p>📍 Paris, France</p>
+                    <p>🕒 Lun-Ven: 9h-18h</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Paris Encre. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Fonction pour réinitialiser les filtres
+        function resetFilters() {
+            document.getElementById('brandFilter').value = '';
+            document.getElementById('minPrice').value = '';
+            document.getElementById('maxPrice').value = '';
+            document.getElementById('sortBy').value = 'name';
+            filterProducts();
+        }
+        
+        // Mettre à jour le fil d'Ariane
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const category = urlParams.get('cat');
+            const searchTerm = urlParams.get('search');
+            const currentCategoryElement = document.getElementById('currentCategory');
+            
+            if (searchTerm) {
+                currentCategoryElement.textContent = `Recherche: "${searchTerm}"`;
+            } else if (category) {
+                const categoryNames = {
+                    'imprimantes': 'Imprimantes',
+                    'consommables': 'Consommables',
+                    'accessoires': 'Accessoires',
+                    'promotions': 'Promotions'
+                };
+                currentCategoryElement.textContent = categoryNames[category] || 'Catégorie';
+            } else {
+                currentCategoryElement.textContent = 'Tous les produits';
+            }
+        });
+    </script>
+</body>
+</html>
