@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détail Produit - Paris Encre</title>
+    <meta name="description" content="Découvrez les détails de nos produits d'impression et accessoires informatiques.">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .product-detail {
+            padding: 2rem 0;
+            min-height: 60vh;
+        }
+        
+        .product-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .product-main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .product-image-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .product-main-image {
+            width: 100%;
+            height: 400px;
+            background: var(--light-bg);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            color: var(--secondary);
+            box-shadow: var(--shadow);
+        }
+        
+        .product-info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .product-brand-badge {
+            background: var(--accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            width: fit-content;
+            font-size: 0.9rem;
+        }
+        
+        .product-detail-title {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        
+        .product-detail-price {
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .product-description {
+            color: var(--text-color);
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+        
+        .product-features {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+        
+        .product-features h3 {
+            color: var(--link);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .features-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-label {
+            font-weight: bold;
+            color: var(--link);
+        }
+        
+        .feature-value {
+            color: var(--text-color);
+        }
+        
+        .product-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .quantity-input {
+            width: 80px;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        .quantity-btn {
+            background: var(--link);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .quantity-btn:hover {
+            background: var(--primary);
+        }
+        
+        .add-to-cart-large {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+        
+        .add-to-cart-large:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .product-tabs {
+            margin-top: 3rem;
+        }
+        
+        .tabs-nav {
+            display: flex;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+        
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 1rem 2rem;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text-color);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .tab-btn:hover {
+            color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .specifications-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .specifications-table th,
+        .specifications-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .specifications-table th {
+            background: var(--light-bg);
+            color: var(--link);
+            font-weight: bold;
+        }
+        
+        .reviews-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .review-item {
+            padding: 1.5rem;
+            background: var(--light-bg);
+            border-radius: 10px;
+        }
+        
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .review-author {
+            font-weight: bold;
+            color: var(--link);
+        }
+        
+        .review-rating {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        
+        .review-text {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .breadcrumb {
+            background: var(--light-bg);
+            padding: 1rem 0;
+        }
+        
+        .breadcrumb-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .breadcrumb-nav {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumb-nav a {
+            color: var(--link);
+            text-decoration: none;
+        }
+        
+        .breadcrumb-nav a:hover {
+            text-decoration: underline;
+        }
+        
+        .breadcrumb-separator {
+            color: var(--text-color);
+        }
+        
+        @media (max-width: 768px) {
+            .product-main {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .product-detail-title {
+                font-size: 2rem;
+            }
+            
+            .product-main-image {
+                height: 300px;
+                font-size: 6rem;
+            }
+            
+            .tabs-nav {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                padding: 0.75rem 1rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">Paris Encre</a>
+            
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Rechercher un produit, une marque..." id="searchInput">
+                <button class="search-btn" onclick="performSearch()">Rechercher</button>
+            </div>
+            
+            <div class="header-actions">
+                <a href="login.html" class="header-link" id="loginLink">Connexion</a>
+                <a href="account.html" class="header-link" id="accountLink" style="display: none;">Mon Compte</a>
+                <a href="cart.html" class="cart-icon">
+                    Panier
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation principale -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html">Accueil</a></li>
+                <li class="nav-item"><a href="category.html?cat=imprimantes">Imprimantes</a></li>
+                <li class="nav-item"><a href="category.html?cat=consommables">Consommables</a></li>
+                <li class="nav-item"><a href="category.html?cat=accessoires">Accessoires</a></li>
+                <li class="nav-item"><a href="category.html?cat=promotions">Promotions</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Fil d'Ariane -->
+    <div class="breadcrumb">
+        <div class="breadcrumb-container">
+            <nav class="breadcrumb-nav">
+                <a href="index.html">Accueil</a>
+                <span class="breadcrumb-separator">></span>
+                <a href="#" id="categoryBreadcrumb">Catégorie</a>
+                <span class="breadcrumb-separator">></span>
+                <span id="productBreadcrumb">Produit</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <main class="product-detail">
+        <div class="product-container">
+            <div class="product-main">
+                <div class="product-image-section">
+                    <div class="product-main-image" id="productImage">
+                        🖨️
+                    </div>
+                </div>
+                
+                <div class="product-info-section">
+                    <div class="product-brand-badge" id="productBrand">Canon</div>
+                    <h1 class="product-detail-title" id="productTitle">Canon PIXMA TS3350</h1>
+                    <div class="product-detail-price" id="productPrice">59.99 €</div>
+                    <p class="product-description" id="productDescription">
+                        Imprimante multifonction jet d'encre WiFi compacte et élégante, parfaite pour l'impression, la numérisation et la copie de documents et photos de qualité.
+                    </p>
+                    
+                    <div class="product-features">
+                        <h3>Caractéristiques principales</h3>
+                        <ul class="features-list" id="productFeatures">
+                            <li>
+                                <span class="feature-label">Type:</span>
+                                <span class="feature-value">Multifonction jet d'encre</span>
+                            </li>
+                            <li>
+                                <span class="feature-label">Connectivité:</span>
+                                <span class="feature-value">WiFi, USB</span>
+                            </li>
+                            <li>
+                                <span class="feature-label">Fonctions:</span>
+                                <span class="feature-value">Impression, Scan, Copie</span>
+                            </li>
+                            <li>
+                                <span class="feature-label">Résolution:</span>
+                                <span class="feature-value">4800 x 1200 dpi</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <div class="quantity-selector">
+                            <button class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+                            <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
+                            <button class="quantity-btn" onclick="changeQuantity(1)">+</button>
+                        </div>
+                        
+                        <button class="add-to-cart-large" onclick="addToCartFromDetail()">
+                            Ajouter au panier
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Onglets -->
+            <div class="product-tabs">
+                <div class="tabs-nav">
+                    <button class="tab-btn active" onclick="showTab('description')">Description</button>
+                    <button class="tab-btn" onclick="showTab('specifications')">Spécifications</button>
+                    <button class="tab-btn" onclick="showTab('reviews')">Avis clients</button>
+                </div>
+                
+                <div class="tab-content active" id="description">
+                    <h3>Description détaillée</h3>
+                    <p>Cette imprimante multifonction Canon PIXMA TS3350 est conçue pour répondre à tous vos besoins d'impression domestique. Avec sa connectivité WiFi intégrée, vous pouvez imprimer directement depuis votre smartphone, tablette ou ordinateur sans fil.</p>
+                    
+                    <p>La qualité d'impression exceptionnelle de 4800 x 1200 dpi garantit des documents nets et des photos éclatantes. Son design compact s'intègre parfaitement dans n'importe quel environnement de travail.</p>
+                    
+                    <p>Fonctionnalités incluses :</p>
+                    <ul>
+                        <li>Impression sans bordure jusqu'au format A4</li>
+                        <li>Application mobile Canon PRINT pour une utilisation simplifiée</li>
+                        <li>Compatible avec AirPrint et Mopria</li>
+                        <li>Cartouches séparées pour une économie optimale</li>
+                    </ul>
+                </div>
+                
+                <div class="tab-content" id="specifications">
+                    <h3>Spécifications techniques</h3>
+                    <table class="specifications-table">
+                        <tr>
+                            <th>Caractéristique</th>
+                            <th>Valeur</th>
+                        </tr>
+                        <tr>
+                            <td>Type d'imprimante</td>
+                            <td>Multifonction jet d'encre couleur</td>
+                        </tr>
+                        <tr>
+                            <td>Résolution d'impression</td>
+                            <td>4800 x 1200 dpi</td>
+                        </tr>
+                        <tr>
+                            <td>Vitesse d'impression</td>
+                            <td>7.7 ipm (noir), 4.0 ipm (couleur)</td>
+                        </tr>
+                        <tr>
+                            <td>Connectivité</td>
+                            <td>WiFi 802.11b/g/n, USB 2.0</td>
+                        </tr>
+                        <tr>
+                            <td>Formats supportés</td>
+                            <td>A4, A5, B5, Letter, Legal, 10x15cm</td>
+                        </tr>
+                        <tr>
+                            <td>Cartouches</td>
+                            <td>PG-545 (noir), CL-546 (couleur)</td>
+                        </tr>
+                        <tr>
+                            <td>Dimensions</td>
+                            <td>425 x 306 x 145 mm</td>
+                        </tr>
+                        <tr>
+                            <td>Poids</td>
+                            <td>3.9 kg</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="tab-content" id="reviews">
+                    <h3>Avis clients</h3>
+                    <div class="reviews-section">
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="review-author">Marie L.</span>
+                                <span class="review-rating">★★★★★</span>
+                            </div>
+                            <p class="review-text">Excellente imprimante pour un usage domestique. La qualité d'impression est remarquable et l'installation WiFi s'est faite sans problème. Je recommande !</p>
+                        </div>
+                        
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="review-author">Pierre M.</span>
+                                <span class="review-rating">★★★★☆</span>
+                            </div>
+                            <p class="review-text">Bon rapport qualité-prix. L'imprimante est compacte et silencieuse. Seul bémol : la vitesse d'impression pourrait être plus rapide.</p>
+                        </div>
+                        
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="review-author">Sophie D.</span>
+                                <span class="review-rating">★★★★★</span>
+                            </div>
+                            <p class="review-text">Parfaite pour imprimer des photos. Les couleurs sont vives et les détails bien nets. L'application mobile est très pratique.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Paris Encre</h3>
+                    <p>Votre spécialiste en imprimantes et consommables depuis plus de 10 ans. Nous proposons les meilleures marques au meilleur prix.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Nos Services</h3>
+                    <p><a href="#">Livraison rapide</a></p>
+                    <p><a href="#">Support technique</a></p>
+                    <p><a href="#">Garantie produits</a></p>
+                    <p><a href="#">Installation sur site</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Informations</h3>
+                    <p><a href="#">Conditions générales</a></p>
+                    <p><a href="#">Politique de confidentialité</a></p>
+                    <p><a href="#">Mentions légales</a></p>
+                    <p><a href="#">Contact</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>📧 contact@parisencre.fr</p>
+                    <p>📞 01 23 45 67 89</p>
+                    <p>📍 Paris, France</p>
+                    <p>🕒 Lun-Ven: 9h-18h</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Paris Encre. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        let currentProduct = null;
+        
+        // Gestion des onglets
+        function showTab(tabName) {
+            // Masquer tous les contenus d'onglets
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Désactiver tous les boutons d'onglets
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => btn.classList.remove('active'));
+            
+            // Afficher le contenu sélectionné
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        // Gestion de la quantité
+        function changeQuantity(delta) {
+            const quantityInput = document.getElementById('quantity');
+            let currentQuantity = parseInt(quantityInput.value);
+            let newQuantity = currentQuantity + delta;
+            
+            if (newQuantity >= 1 && newQuantity <= 10) {
+                quantityInput.value = newQuantity;
+            }
+        }
+        
+        // Ajouter au panier depuis la page détail
+        function addToCartFromDetail() {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = parseInt(urlParams.get('id'));
+            
+            if (productId && currentProduct) {
+                for (let i = 0; i < quantity; i++) {
+                    addToCart(productId);
+                }
+            }
+        }
+        
+        // Charger les détails du produit
+        function loadProductDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = parseInt(urlParams.get('id'));
+            
+            if (!productId) {
+                showAlert('Produit non trouvé', 'error');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Rechercher le produit dans les données
+            const allProducts = [...sampleProducts.imprimantes, ...sampleProducts.consommables, ...sampleProducts.accessoires];
+            currentProduct = allProducts.find(p => p.id === productId);
+            
+            if (!currentProduct) {
+                showAlert('Produit non trouvé', 'error');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Mettre à jour l'interface
+            document.getElementById('productImage').textContent = currentProduct.image;
+            document.getElementById('productBrand').textContent = currentProduct.brand;
+            document.getElementById('productTitle').textContent = currentProduct.name;
+            document.getElementById('productPrice').textContent = currentProduct.price.toFixed(2) + ' €';
+            document.getElementById('productDescription').textContent = currentProduct.description;
+            
+            // Mettre à jour le fil d'Ariane
+            document.getElementById('categoryBreadcrumb').textContent = getCategoryTitle(currentProduct.category);
+            document.getElementById('categoryBreadcrumb').href = `category.html?cat=${currentProduct.category}`;
+            document.getElementById('productBreadcrumb').textContent = currentProduct.name;
+            
+            // Mettre à jour le titre de la page
+            document.title = `${currentProduct.name} - Paris Encre`;
+        }
+        
+        // Initialiser la page au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProductDetails();
+        });
+    </script>
+</body>
+</html>
