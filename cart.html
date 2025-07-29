@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panier - Paris Encre</title>
+    <meta name="description" content="Consultez votre panier d'achat et finalisez votre commande sur Paris Encre.">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .cart-page {
+            padding: 2rem 0;
+            min-height: 60vh;
+        }
+        
+        .cart-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .cart-title {
+            color: var(--secondary);
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .cart-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+        }
+        
+        .cart-items-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .cart-summary-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+        
+        .cart-item {
+            display: grid;
+            grid-template-columns: 100px 1fr auto auto;
+            gap: 1.5rem;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            background: var(--light-bg);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+        
+        .cart-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .cart-item-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--link);
+        }
+        
+        .cart-item-brand {
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+        
+        .cart-item-price {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .cart-item-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .quantity-input {
+            width: 60px;
+            padding: 0.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .quantity-btn {
+            background: var(--link);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .quantity-btn:hover {
+            background: var(--primary);
+        }
+        
+        .remove-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .remove-btn:hover {
+            background: var(--secondary);
+        }
+        
+        .cart-item-total {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-align: right;
+        }
+        
+        .cart-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .summary-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+        
+        .summary-row.total {
+            border-top: 2px solid var(--border-color);
+            padding-top: 1rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .summary-label {
+            color: var(--text-color);
+        }
+        
+        .summary-value {
+            font-weight: bold;
+            color: var(--link);
+        }
+        
+        .checkout-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            margin-top: 1rem;
+        }
+        
+        .checkout-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .checkout-btn:disabled {
+            background: var(--border-color);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .continue-shopping {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .continue-shopping:hover {
+            background: var(--link);
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+        
+        .empty-cart-icon {
+            font-size: 4rem;
+            color: var(--border-color);
+            margin-bottom: 1rem;
+        }
+        
+        .empty-cart h2 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .empty-cart p {
+            color: var(--text-color);
+            margin-bottom: 2rem;
+        }
+        
+        .promo-code {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .promo-code h4 {
+            color: var(--link);
+            margin-bottom: 1rem;
+        }
+        
+        .promo-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .promo-input input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+        }
+        
+        .promo-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .promo-btn:hover {
+            background: var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            .cart-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .cart-item {
+                grid-template-columns: 80px 1fr;
+                gap: 1rem;
+            }
+            
+            .cart-item-controls {
+                grid-column: 1 / -1;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-top: 1rem;
+            }
+            
+            .cart-item-total {
+                grid-column: 1 / -1;
+                text-align: center;
+                margin-top: 0.5rem;
+            }
+            
+            .cart-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">Paris Encre</a>
+            
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Rechercher un produit, une marque..." id="searchInput">
+                <button class="search-btn" onclick="performSearch()">Rechercher</button>
+            </div>
+            
+            <div class="header-actions">
+                <a href="login.html" class="header-link" id="loginLink">Connexion</a>
+                <a href="account.html" class="header-link" id="accountLink" style="display: none;">Mon Compte</a>
+                <a href="cart.html" class="cart-icon">
+                    Panier
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation principale -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html">Accueil</a></li>
+                <li class="nav-item"><a href="category.html?cat=imprimantes">Imprimantes</a></li>
+                <li class="nav-item"><a href="category.html?cat=consommables">Consommables</a></li>
+                <li class="nav-item"><a href="category.html?cat=accessoires">Accessoires</a></li>
+                <li class="nav-item"><a href="category.html?cat=promotions">Promotions</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="cart-page">
+        <div class="cart-container">
+            <h1 class="cart-title">Mon Panier</h1>
+            
+            <a href="category.html" class="continue-shopping">← Continuer mes achats</a>
+            
+            <div class="cart-content" id="cartContent">
+                <!-- Le contenu sera chargé dynamiquement -->
+            </div>
+            
+            <!-- Template pour panier vide -->
+            <div class="empty-cart" id="emptyCart" style="display: none;">
+                <div class="empty-cart-icon">🛒</div>
+                <h2>Votre panier est vide</h2>
+                <p>Découvrez notre large gamme d'imprimantes, consommables et accessoires informatiques.</p>
+                <a href="index.html" class="cta-button">Commencer mes achats</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Paris Encre</h3>
+                    <p>Votre spécialiste en imprimantes et consommables depuis plus de 10 ans. Nous proposons les meilleures marques au meilleur prix.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Nos Services</h3>
+                    <p><a href="#">Livraison rapide</a></p>
+                    <p><a href="#">Support technique</a></p>
+                    <p><a href="#">Garantie produits</a></p>
+                    <p><a href="#">Installation sur site</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Informations</h3>
+                    <p><a href="#">Conditions générales</a></p>
+                    <p><a href="#">Politique de confidentialité</a></p>
+                    <p><a href="#">Mentions légales</a></p>
+                    <p><a href="#">Contact</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>📧 contact@parisencre.fr</p>
+                    <p>📞 01 23 45 67 89</p>
+                    <p>📍 Paris, France</p>
+                    <p>🕒 Lun-Ven: 9h-18h</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Paris Encre. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Fonction pour appliquer un code promo
+        function applyPromoCode() {
+            const promoInput = document.getElementById('promoCode');
+            const promoCode = promoInput.value.trim().toUpperCase();
+            
+            // Codes promo de démonstration
+            const validCodes = {
+                'WELCOME10': { discount: 0.10, description: 'Réduction de 10%' },
+                'STUDENT15': { discount: 0.15, description: 'Réduction étudiant 15%' },
+                'FIRST20': { discount: 0.20, description: 'Première commande -20%' }
+            };
+            
+            if (validCodes[promoCode]) {
+                const discount = validCodes[promoCode];
+                localStorage.setItem('appliedPromo', JSON.stringify(discount));
+                showAlert(`Code promo appliqué : ${discount.description}`, 'success');
+                loadCartItems();
+            } else if (promoCode) {
+                showAlert('Code promo invalide', 'error');
+            }
+            
+            promoInput.value = '';
+        }
+        
+        // Fonction pour supprimer le code promo
+        function removePromoCode() {
+            localStorage.removeItem('appliedPromo');
+            showAlert('Code promo supprimé', 'info');
+            loadCartItems();
+        }
+        
+        // Fonction pour aller au checkout
+        function goToCheckout() {
+            if (cart.length === 0) {
+                showAlert('Votre panier est vide', 'error');
+                return;
+            }
+            
+            window.location.href = 'checkout.html';
+        }
+        
+        // Surcharge de la fonction loadCartItems pour la page panier
+        function loadCartItems() {
+            const cartContent = document.getElementById('cartContent');
+            const emptyCart = document.getElementById('emptyCart');
+            
+            if (cart.length === 0) {
+                cartContent.style.display = 'none';
+                emptyCart.style.display = 'block';
+                return;
+            }
+            
+            cartContent.style.display = 'grid';
+            emptyCart.style.display = 'none';
+            
+            let subtotal = 0;
+            let cartItemsHTML = '';
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
+                cartItemsHTML += `
+                    <div class="cart-item">
+                        <div class="cart-item-image">${item.image}</div>
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-brand">${item.brand}</div>
+                            <div class="cart-item-price">${item.price.toFixed(2)} €</div>
+                        </div>
+                        <div class="cart-item-controls">
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">-</button>
+                                <input type="number" class="quantity-input" value="${item.quantity}" 
+                                       onchange="updateQuantity(${item.id}, this.value)" min="1">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
+                            </div>
+                            <button class="remove-btn" onclick="removeFromCart(${item.id})">Supprimer</button>
+                        </div>
+                        <div class="cart-item-total">${itemTotal.toFixed(2)} €</div>
+                    </div>
+                `;
+            });
+            
+            // Calculer les réductions
+            const appliedPromo = JSON.parse(localStorage.getItem('appliedPromo') || 'null');
+            let discount = 0;
+            let discountAmount = 0;
+            
+            if (appliedPromo) {
+                discount = appliedPromo.discount;
+                discountAmount = subtotal * discount;
+            }
+            
+            const shipping = subtotal > 50 ? 0 : 5.99;
+            const total = subtotal - discountAmount + shipping;
+            
+            // Construire le HTML du résumé
+            let summaryHTML = `
+                <div class="summary-title">Récapitulatif</div>
+                <div class="summary-row">
+                    <span class="summary-label">Sous-total (${cart.reduce((sum, item) => sum + item.quantity, 0)} articles)</span>
+                    <span class="summary-value">${subtotal.toFixed(2)} €</span>
+                </div>
+            `;
+            
+            if (appliedPromo) {
+                summaryHTML += `
+                    <div class="summary-row">
+                        <span class="summary-label">${appliedPromo.description}</span>
+                        <span class="summary-value" style="color: var(--accent);">-${discountAmount.toFixed(2)} €</span>
+                    </div>
+                `;
+            }
+            
+            summaryHTML += `
+                <div class="summary-row">
+                    <span class="summary-label">Livraison</span>
+                    <span class="summary-value">${shipping === 0 ? 'Gratuite' : shipping.toFixed(2) + ' €'}</span>
+                </div>
+                <div class="summary-row total">
+                    <span class="summary-label">Total</span>
+                    <span class="summary-value">${total.toFixed(2)} €</span>
+                </div>
+                
+                <div class="promo-code">
+                    <h4>Code promo</h4>
+                    <div class="promo-input">
+                        <input type="text" id="promoCode" placeholder="Entrez votre code">
+                        <button class="promo-btn" onclick="applyPromoCode()">Appliquer</button>
+                    </div>
+                    ${appliedPromo ? `<button class="promo-btn" onclick="removePromoCode()" style="margin-top: 0.5rem; background: var(--primary);">Supprimer le code</button>` : ''}
+                </div>
+                
+                <button class="checkout-btn" onclick="goToCheckout()">
+                    Finaliser ma commande
+                </button>
+            `;
+            
+            cartContent.innerHTML = `
+                <div class="cart-items-section">
+                    ${cartItemsHTML}
+                </div>
+                <div class="cart-summary-section">
+                    <div class="cart-summary">
+                        ${summaryHTML}
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Écouter la touche Entrée pour le code promo
+        document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('keypress', function(e) {
+                if (e.target.id === 'promoCode' && e.key === 'Enter') {
+                    applyPromoCode();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
