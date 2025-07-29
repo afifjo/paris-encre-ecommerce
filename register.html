@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Paris Encre</title>
+    <meta name="description" content="Créez votre compte Paris Encre et profitez d'avantages exclusifs sur nos imprimantes et consommables.">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .auth-page {
+            padding: 4rem 0;
+            min-height: 70vh;
+            background: linear-gradient(135deg, var(--light-bg), white);
+        }
+        
+        .auth-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .auth-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .auth-title {
+            color: var(--secondary);
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-subtitle {
+            color: var(--text-color);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: left;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-group label {
+            font-weight: bold;
+            color: var(--link);
+            font-size: 1rem;
+        }
+        
+        .form-group input {
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(230, 41, 89, 0.1);
+        }
+        
+        .form-group input.error {
+            border-color: var(--primary);
+            background-color: #fff5f5;
+        }
+        
+        .form-group input.success {
+            border-color: var(--accent);
+            background-color: #f0fff4;
+        }
+        
+        .password-strength {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .strength-bar {
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            margin: 0.5rem 0;
+            overflow: hidden;
+        }
+        
+        .strength-fill {
+            height: 100%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .strength-weak { background: var(--primary); width: 25%; }
+        .strength-fair { background: #ff9800; width: 50%; }
+        .strength-good { background: #2196f3; width: 75%; }
+        .strength-strong { background: var(--accent); width: 100%; }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin: 1rem 0;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 0.25rem;
+            transform: scale(1.2);
+        }
+        
+        .checkbox-group label {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: var(--text-color);
+        }
+        
+        .checkbox-group a {
+            color: var(--link);
+            text-decoration: none;
+        }
+        
+        .checkbox-group a:hover {
+            text-decoration: underline;
+        }
+        
+        .auth-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            margin-top: 1rem;
+        }
+        
+        .auth-button:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .auth-button:disabled {
+            background: var(--border-color);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            color: var(--text-color);
+        }
+        
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+        
+        .auth-divider span {
+            padding: 0 1rem;
+            background: white;
+        }
+        
+        .auth-link {
+            color: var(--link);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        
+        .auth-link:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-color);
+        }
+        
+        .social-login {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background: white;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .social-btn:hover {
+            border-color: var(--primary);
+            background: var(--light-bg);
+        }
+        
+        .benefits {
+            background: var(--light-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .benefits h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .benefits-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-color);
+        }
+        
+        .benefits-list li::before {
+            content: '✓';
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+        
+        .field-validation {
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        .field-validation.error {
+            color: var(--primary);
+            display: block;
+        }
+        
+        .field-validation.success {
+            color: var(--accent);
+            display: block;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .auth-card {
+                padding: 2rem;
+                margin: 0 1rem;
+            }
+            
+            .auth-title {
+                font-size: 2rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .benefits {
+                margin: 2rem 1rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">Paris Encre</a>
+            
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Rechercher un produit, une marque..." id="searchInput">
+                <button class="search-btn" onclick="performSearch()">Rechercher</button>
+            </div>
+            
+            <div class="header-actions">
+                <a href="login.html" class="header-link" id="loginLink">Connexion</a>
+                <a href="account.html" class="header-link" id="accountLink" style="display: none;">Mon Compte</a>
+                <a href="cart.html" class="cart-icon">
+                    Panier
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation principale -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html">Accueil</a></li>
+                <li class="nav-item"><a href="category.html?cat=imprimantes">Imprimantes</a></li>
+                <li class="nav-item"><a href="category.html?cat=consommables">Consommables</a></li>
+                <li class="nav-item"><a href="category.html?cat=accessoires">Accessoires</a></li>
+                <li class="nav-item"><a href="category.html?cat=promotions">Promotions</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="auth-page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h1 class="auth-title">Inscription</h1>
+                <p class="auth-subtitle">Créez votre compte Paris Encre</p>
+                
+                <form class="auth-form" id="registerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">Prénom</label>
+                            <input type="text" id="firstName" name="firstName" required 
+                                   placeholder="Votre prénom">
+                            <div class="field-validation" id="firstNameValidation"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="lastName">Nom</label>
+                            <input type="text" id="lastName" name="lastName" required 
+                                   placeholder="Votre nom">
+                            <div class="field-validation" id="lastNameValidation"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Adresse email</label>
+                        <input type="email" id="email" name="email" required 
+                               placeholder="votre@email.com">
+                        <div class="field-validation" id="emailValidation"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Téléphone (optionnel)</label>
+                        <input type="tel" id="phone" name="phone" 
+                               placeholder="01 23 45 67 89">
+                        <div class="field-validation" id="phoneValidation"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" id="password" name="password" required 
+                               placeholder="Choisissez un mot de passe sécurisé">
+                        <div class="password-strength">
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strengthFill"></div>
+                            </div>
+                            <span id="strengthText">Saisissez un mot de passe</span>
+                        </div>
+                        <div class="field-validation" id="passwordValidation"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmer le mot de passe</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required 
+                               placeholder="Confirmez votre mot de passe">
+                        <div class="field-validation" id="confirmPasswordValidation"></div>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">
+                            J'accepte les <a href="#" target="_blank">conditions générales d'utilisation</a> 
+                            et la <a href="#" target="_blank">politique de confidentialité</a>
+                        </label>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="newsletter" name="newsletter">
+                        <label for="newsletter">
+                            Je souhaite recevoir les offres promotionnelles et actualités de Paris Encre
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="auth-button" id="registerBtn">
+                        <span class="loading-spinner" id="registerSpinner"></span>
+                        Créer mon compte
+                    </button>
+                </form>
+                
+                <div class="auth-divider">
+                    <span>ou</span>
+                </div>
+                
+                <div class="social-login">
+                    <a href="#" class="social-btn" onclick="socialLogin('google')">
+                        <span>🔍</span>
+                        S'inscrire avec Google
+                    </a>
+                    <a href="#" class="social-btn" onclick="socialLogin('facebook')">
+                        <span>📘</span>
+                        S'inscrire avec Facebook
+                    </a>
+                </div>
+                
+                <div class="auth-footer">
+                    <p>Déjà un compte ? 
+                        <a href="login.html" class="auth-link">Se connecter</a>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Avantages de créer un compte -->
+            <div class="benefits">
+                <h3>Vos avantages membre</h3>
+                <ul class="benefits-list">
+                    <li>Suivi de vos commandes en temps réel</li>
+                    <li>Historique de vos achats et factures</li>
+                    <li>Offres exclusives et promotions membres</li>
+                    <li>Livraison express avec adresses sauvegardées</li>
+                    <li>Support client prioritaire et personnalisé</li>
+                    <li>Programme de fidélité avec points de récompense</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Paris Encre</h3>
+                    <p>Votre spécialiste en imprimantes et consommables depuis plus de 10 ans. Nous proposons les meilleures marques au meilleur prix.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Nos Services</h3>
+                    <p><a href="#">Livraison rapide</a></p>
+                    <p><a href="#">Support technique</a></p>
+                    <p><a href="#">Garantie produits</a></p>
+                    <p><a href="#">Installation sur site</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Informations</h3>
+                    <p><a href="#">Conditions générales</a></p>
+                    <p><a href="#">Politique de confidentialité</a></p>
+                    <p><a href="#">Mentions légales</a></p>
+                    <p><a href="#">Contact</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>📧 contact@parisencre.fr</p>
+                    <p>📞 01 23 45 67 89</p>
+                    <p>📍 Paris, France</p>
+                    <p>🕒 Lun-Ven: 9h-18h</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Paris Encre. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Fonction pour afficher le spinner de chargement
+        function showLoading(show) {
+            const spinner = document.getElementById('registerSpinner');
+            const button = document.getElementById('registerBtn');
+            
+            if (show) {
+                spinner.style.display = 'inline-block';
+                button.disabled = true;
+                button.textContent = 'Création en cours...';
+                button.prepend(spinner);
+            } else {
+                spinner.style.display = 'none';
+                button.disabled = false;
+                button.textContent = 'Créer mon compte';
+            }
+        }
+        
+        // Fonction pour la connexion sociale (simulation)
+        function socialLogin(provider) {
+            showAlert(`Inscription avec ${provider} en cours de développement`, 'info');
+        }
+        
+        // Validation de la force du mot de passe
+        function checkPasswordStrength(password) {
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthText = document.getElementById('strengthText');
+            
+            let strength = 0;
+            let text = '';
+            let className = '';
+            
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            switch (strength) {
+                case 0:
+                case 1:
+                    text = 'Très faible';
+                    className = 'strength-weak';
+                    break;
+                case 2:
+                    text = 'Faible';
+                    className = 'strength-weak';
+                    break;
+                case 3:
+                    text = 'Moyen';
+                    className = 'strength-fair';
+                    break;
+                case 4:
+                    text = 'Fort';
+                    className = 'strength-good';
+                    break;
+                case 5:
+                    text = 'Très fort';
+                    className = 'strength-strong';
+                    break;
+            }
+            
+            strengthFill.className = `strength-fill ${className}`;
+            strengthText.textContent = text;
+            
+            return strength >= 3;
+        }
+        
+        // Validation des champs en temps réel
+        function validateField(fieldId, validationId, validator, errorMessage, successMessage = '') {
+            const field = document.getElementById(fieldId);
+            const validation = document.getElementById(validationId);
+            
+            field.addEventListener('blur', function() {
+                const isValid = validator(this.value);
+                
+                if (this.value && !isValid) {
+                    this.classList.add('error');
+                    this.classList.remove('success');
+                    validation.textContent = errorMessage;
+                    validation.className = 'field-validation error';
+                } else if (this.value && isValid) {
+                    this.classList.remove('error');
+                    this.classList.add('success');
+                    validation.textContent = successMessage;
+                    validation.className = 'field-validation success';
+                } else {
+                    this.classList.remove('error', 'success');
+                    validation.className = 'field-validation';
+                }
+            });
+            
+            field.addEventListener('input', function() {
+                this.classList.remove('error');
+                if (this.value) {
+                    const isValid = validator(this.value);
+                    if (isValid) {
+                        this.classList.add('success');
+                        validation.textContent = successMessage;
+                        validation.className = 'field-validation success';
+                    } else {
+                        this.classList.remove('success');
+                        validation.className = 'field-validation';
+                    }
+                } else {
+                    this.classList.remove('success');
+                    validation.className = 'field-validation';
+                }
+            });
+        }
+        
+        // Initialisation des validations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Validation du prénom
+            validateField('firstName', 'firstNameValidation', 
+                value => value.length >= 2,
+                'Le prénom doit contenir au moins 2 caractères',
+                '✓ Prénom valide'
+            );
+            
+            // Validation du nom
+            validateField('lastName', 'lastNameValidation',
+                value => value.length >= 2,
+                'Le nom doit contenir au moins 2 caractères',
+                '✓ Nom valide'
+            );
+            
+            // Validation de l'email
+            validateField('email', 'emailValidation',
+                value => validateEmail(value),
+                'Format d\'email invalide',
+                '✓ Email valide'
+            );
+            
+            // Validation du téléphone
+            validateField('phone', 'phoneValidation',
+                value => !value || /^[0-9\s\-\+\(\)]{10,}$/.test(value),
+                'Format de téléphone invalide',
+                '✓ Téléphone valide'
+            );
+            
+            // Validation du mot de passe
+            const passwordInput = document.getElementById('password');
+            passwordInput.addEventListener('input', function() {
+                const isStrong = checkPasswordStrength(this.value);
+                const validation = document.getElementById('passwordValidation');
+                
+                if (this.value && !isStrong) {
+                    this.classList.add('error');
+                    this.classList.remove('success');
+                    validation.textContent = 'Le mot de passe doit être plus fort';
+                    validation.className = 'field-validation error';
+                } else if (this.value && isStrong) {
+                    this.classList.remove('error');
+                    this.classList.add('success');
+                    validation.textContent = '✓ Mot de passe sécurisé';
+                    validation.className = 'field-validation success';
+                }
+                
+                // Vérifier la confirmation si elle existe
+                const confirmPassword = document.getElementById('confirmPassword');
+                if (confirmPassword.value) {
+                    validatePasswordConfirmation();
+                }
+            });
+            
+            // Validation de la confirmation du mot de passe
+            function validatePasswordConfirmation() {
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword');
+                const validation = document.getElementById('confirmPasswordValidation');
+                
+                if (confirmPassword.value && confirmPassword.value !== password) {
+                    confirmPassword.classList.add('error');
+                    confirmPassword.classList.remove('success');
+                    validation.textContent = 'Les mots de passe ne correspondent pas';
+                    validation.className = 'field-validation error';
+                } else if (confirmPassword.value && confirmPassword.value === password) {
+                    confirmPassword.classList.remove('error');
+                    confirmPassword.classList.add('success');
+                    validation.textContent = '✓ Mots de passe identiques';
+                    validation.className = 'field-validation success';
+                }
+            }
+            
+            document.getElementById('confirmPassword').addEventListener('input', validatePasswordConfirmation);
+            document.getElementById('confirmPassword').addEventListener('blur', validatePasswordConfirmation);
+        });
+        
+        // Surcharge de la fonction register pour ajouter l'animation
+        const originalRegister = window.register;
+        window.register = function(name, email, password, confirmPassword) {
+            showLoading(true);
+            
+            // Simuler un délai d'inscription
+            setTimeout(() => {
+                const result = originalRegister(name, email, password, confirmPassword);
+                showLoading(false);
+                return result;
+            }, 2000);
+        };
+        
+        // Modification de la fonction register dans main.js pour utiliser prénom + nom
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+            
+            if (!terms) {
+                showAlert('Vous devez accepter les conditions générales', 'error');
+                return;
+            }
+            
+            const fullName = `${firstName} ${lastName}`;
+            register(fullName, email, password, confirmPassword);
+        });
+    </script>
+</body>
+</html>
