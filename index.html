@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paris Encre - Imprimantes, Consommables et Accessoires Informatiques</title>
+    <meta name="description" content="Paris Encre - Votre spécialiste en imprimantes, cartouches d'encre, toners et accessoires informatiques. Toutes les grandes marques françaises au meilleur prix.">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">Paris Encre</a>
+            
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Rechercher un produit, une marque..." id="searchInput">
+                <button class="search-btn" onclick="performSearch()">Rechercher</button>
+            </div>
+            
+            <div class="header-actions">
+                <a href="login.html" class="header-link" id="loginLink">Connexion</a>
+                <a href="account.html" class="header-link" id="accountLink" style="display: none;">Mon Compte</a>
+                <a href="cart.html" class="cart-icon">
+                    Panier
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation principale -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html">Accueil</a></li>
+                <li class="nav-item"><a href="category.html?cat=imprimantes">Imprimantes</a></li>
+                <li class="nav-item"><a href="category.html?cat=consommables">Consommables</a></li>
+                <li class="nav-item"><a href="category.html?cat=accessoires">Accessoires</a></li>
+                <li class="nav-item"><a href="category.html?cat=promotions">Promotions</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Section Hero -->
+    <section class="hero">
+        <div class="hero-container">
+            <h1>Bienvenue chez Paris Encre</h1>
+            <p>Votre spécialiste en imprimantes, consommables et accessoires informatiques. 
+               Découvrez toutes les grandes marques françaises au meilleur prix avec une livraison rapide.</p>
+            <a href="category.html?cat=promotions" class="cta-button">Découvrir nos promotions</a>
+        </div>
+    </section>
+
+    <!-- Catégories principales -->
+    <section class="categories">
+        <div class="categories-container">
+            <h2 class="section-title">Nos Catégories</h2>
+            <div class="categories-grid">
+                <div class="category-card fade-in-up">
+                    <div class="category-icon">🖨️</div>
+                    <h3>Imprimantes</h3>
+                    <p>Imprimantes jet d'encre, laser, multifonctions et 3D. Toutes les grandes marques : Canon, HP, Epson, Brother...</p>
+                    <a href="category.html?cat=imprimantes" class="category-link">Voir les imprimantes</a>
+                </div>
+                
+                <div class="category-card fade-in-up">
+                    <div class="category-icon">🎨</div>
+                    <h3>Consommables</h3>
+                    <p>Cartouches d'encre originales et compatibles, toners, papiers photo et bureautique de qualité professionnelle.</p>
+                    <a href="category.html?cat=consommables" class="category-link">Voir les consommables</a>
+                </div>
+                
+                <div class="category-card fade-in-up">
+                    <div class="category-icon">💻</div>
+                    <h3>Accessoires</h3>
+                    <p>Câbles, adaptateurs, supports, solutions de stockage et tous les accessoires pour votre matériel informatique.</p>
+                    <a href="category.html?cat=accessoires" class="category-link">Voir les accessoires</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Produits vedettes -->
+    <section class="featured-products">
+        <div class="categories-container">
+            <h2 class="section-title">Produits Vedettes</h2>
+            <div class="products-grid" id="featuredProducts">
+                <!-- Les produits seront chargés dynamiquement -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Paris Encre</h3>
+                    <p>Votre spécialiste en imprimantes et consommables depuis plus de 10 ans. Nous proposons les meilleures marques au meilleur prix.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Nos Services</h3>
+                    <p><a href="#">Livraison rapide</a></p>
+                    <p><a href="#">Support technique</a></p>
+                    <p><a href="#">Garantie produits</a></p>
+                    <p><a href="#">Installation sur site</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Informations</h3>
+                    <p><a href="#">Conditions générales</a></p>
+                    <p><a href="#">Politique de confidentialité</a></p>
+                    <p><a href="#">Mentions légales</a></p>
+                    <p><a href="#">Contact</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>📧 contact@parisencre.fr</p>
+                    <p>📞 01 23 45 67 89</p>
+                    <p>📍 Paris, France</p>
+                    <p>🕒 Lun-Ven: 9h-18h</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Paris Encre. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
