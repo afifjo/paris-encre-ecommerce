@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finaliser ma commande - Paris Encre</title>
+    <meta name="description" content="Finalisez votre commande sur Paris Encre avec notre processus de paiement sécurisé.">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .checkout-page {
+            padding: 2rem 0;
+            min-height: 70vh;
+            background: linear-gradient(135deg, #f8f9fa, var(--light-bg));
+        }
+        
+        .checkout-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .checkout-title {
+            color: var(--secondary);
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .checkout-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+        }
+        
+        .checkout-form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .checkout-summary-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+        
+        .section-title {
+            color: var(--link);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-group label {
+            font-weight: bold;
+            color: var(--link);
+            font-size: 1rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(230, 41, 89, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .shipping-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .shipping-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .shipping-option:hover {
+            border-color: var(--primary);
+            background: var(--light-bg);
+        }
+        
+        .shipping-option.selected {
+            border-color: var(--primary);
+            background: var(--light-bg);
+        }
+        
+        .shipping-option input[type="radio"] {
+            transform: scale(1.2);
+        }
+        
+        .shipping-info {
+            flex: 1;
+        }
+        
+        .shipping-name {
+            font-weight: bold;
+            color: var(--link);
+            margin-bottom: 0.25rem;
+        }
+        
+        .shipping-description {
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+        
+        .shipping-price {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-method:hover {
+            border-color: var(--primary);
+            background: var(--light-bg);
+        }
+        
+        .payment-method.selected {
+            border-color: var(--primary);
+            background: var(--light-bg);
+        }
+        
+        .payment-method input[type="radio"] {
+            transform: scale(1.2);
+        }
+        
+        .payment-icon {
+            font-size: 1.5rem;
+        }
+        
+        .payment-info {
+            flex: 1;
+        }
+        
+        .payment-name {
+            font-weight: bold;
+            color: var(--link);
+            margin-bottom: 0.25rem;
+        }
+        
+        .payment-description {
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+        
+        .card-details {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .card-details.show {
+            display: block;
+        }
+        
+        .security-info {
+            background: var(--light-bg);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .security-icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .security-text {
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+        
+        .order-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+        
+        .summary-image {
+            width: 60px;
+            height: 60px;
+            background: var(--light-bg);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .summary-details {
+            flex: 1;
+        }
+        
+        .summary-name {
+            font-weight: bold;
+            color: var(--link);
+            margin-bottom: 0.25rem;
+        }
+        
+        .summary-quantity {
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+        
+        .summary-price {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .total-section {
+            border-top: 2px solid var(--border-color);
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .total-row.final {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .place-order-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1.25rem 2rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+        
+        .place-order-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .place-order-btn:disabled {
+            background: var(--border-color);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .checkout-steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--border-color);
+            color: var(--text-color);
+            border-radius: 20px;
+            margin: 0 0.5rem;
+        }
+        
+        .step.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .step.completed {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loading-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--light-bg);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .checkout-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkout-title {
+                font-size: 2rem;
+            }
+            
+            .checkout-steps {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">Paris Encre</a>
+            
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Rechercher un produit, une marque..." id="searchInput">
+                <button class="search-btn" onclick="performSearch()">Rechercher</button>
+            </div>
+            
+            <div class="header-actions">
+                <a href="login.html" class="header-link" id="loginLink">Connexion</a>
+                <a href="account.html" class="header-link" id="accountLink" style="display: none;">Mon Compte</a>
+                <a href="cart.html" class="cart-icon">
+                    Panier
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation principale -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html">Accueil</a></li>
+                <li class="nav-item"><a href="category.html?cat=imprimantes">Imprimantes</a></li>
+                <li class="nav-item"><a href="category.html?cat=consommables">Consommables</a></li>
+                <li class="nav-item"><a href="category.html?cat=accessoires">Accessoires</a></li>
+                <li class="nav-item"><a href="category.html?cat=promotions">Promotions</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="checkout-page">
+        <div class="checkout-container">
+            <h1 class="checkout-title">Finaliser ma commande</h1>
+            
+            <!-- Étapes du checkout -->
+            <div class="checkout-steps">
+                <div class="step completed">
+                    <span>1</span>
+                    <span>Panier</span>
+                </div>
+                <div class="step active">
+                    <span>2</span>
+                    <span>Informations</span>
+                </div>
+                <div class="step">
+                    <span>3</span>
+                    <span>Paiement</span>
+                </div>
+                <div class="step">
+                    <span>4</span>
+                    <span>Confirmation</span>
+                </div>
+            </div>
+            
+            <div class="checkout-content">
+                <!-- Formulaire de commande -->
+                <div class="checkout-form-section">
+                    <form id="checkoutForm">
+                        <!-- Informations de livraison -->
+                        <div class="form-section">
+                            <h2 class="section-title">Informations de livraison</h2>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">Prénom *</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Nom *</label>
+                                    <input type="text" id="lastName" name="lastName" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email">Email *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Téléphone *</label>
+                                    <input type="tel" id="phone" name="phone" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="address">Adresse *</label>
+                                <input type="text" id="address" name="address" required placeholder="Numéro et nom de rue">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="city">Ville *</label>
+                                    <input type="text" id="city" name="city" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="postalCode">Code postal *</label>
+                                    <input type="text" id="postalCode" name="postalCode" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="country">Pays *</label>
+                                <select id="country" name="country" required>
+                                    <option value="FR">France</option>
+                                    <option value="BE">Belgique</option>
+                                    <option value="CH">Suisse</option>
+                                    <option value="LU">Luxembourg</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="deliveryNotes">Instructions de livraison (optionnel)</label>
+                                <textarea id="deliveryNotes" name="deliveryNotes" placeholder="Code d'accès, étage, instructions spéciales..."></textarea>
+                            </div>
+                        </div>
+                        
+                        <!-- Options de livraison -->
+                        <div class="form-section">
+                            <h2 class="section-title">Mode de livraison</h2>
+                            
+                            <div class="shipping-options">
+                                <div class="shipping-option selected" onclick="selectShipping('standard')">
+                                    <input type="radio" name="shipping" value="standard" checked>
+                                    <div class="shipping-info">
+                                        <div class="shipping-name">Livraison standard</div>
+                                        <div class="shipping-description">3-5 jours ouvrés</div>
+                                    </div>
+                                    <div class="shipping-price">5,99 €</div>
+                                </div>
+                                
+                                <div class="shipping-option" onclick="selectShipping('express')">
+                                    <input type="radio" name="shipping" value="express">
+                                    <div class="shipping-info">
+                                        <div class="shipping-name">Livraison express</div>
+                                        <div class="shipping-description">1-2 jours ouvrés</div>
+                                    </div>
+                                    <div class="shipping-price">9,99 €</div>
+                                </div>
+                                
+                                <div class="shipping-option" onclick="selectShipping('free')">
+                                    <input type="radio" name="shipping" value="free">
+                                    <div class="shipping-info">
+                                        <div class="shipping-name">Livraison gratuite</div>
+                                        <div class="shipping-description">5-7 jours ouvrés (commande > 50€)</div>
+                                    </div>
+                                    <div class="shipping-price">Gratuit</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Méthodes de paiement -->
+                        <div class="form-section">
+                            <h2 class="section-title">Mode de paiement</h2>
+                            
+                            <div class="payment-methods">
+                                <div class="payment-method selected" onclick="selectPayment('card')">
+                                    <input type="radio" name="payment" value="card" checked>
+                                    <div class="payment-icon">💳</div>
+                                    <div class="payment-info">
+                                        <div class="payment-name">Carte bancaire</div>
+                                        <div class="payment-description">Visa, Mastercard, American Express</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="payment-method" onclick="selectPayment('paypal')">
+                                    <input type="radio" name="payment" value="paypal">
+                                    <div class="payment-icon">🅿️</div>
+                                    <div class="payment-info">
+                                        <div class="payment-name">PayPal</div>
+                                        <div class="payment-description">Paiement sécurisé avec PayPal</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="payment-method" onclick="selectPayment('transfer')">
+                                    <input type="radio" name="payment" value="transfer">
+                                    <div class="payment-icon">🏦</div>
+                                    <div class="payment-info">
+                                        <div class="payment-name">Virement bancaire</div>
+                                        <div class="payment-description">Paiement par virement SEPA</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Détails de la carte -->
+                            <div class="card-details show" id="cardDetails">
+                                <div class="form-row">
+                                    <div class="form-group full-width">
+                                        <label for="cardNumber">Numéro de carte *</label>
+                                        <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="expiryDate">Date d'expiration *</label>
+                                        <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/AA" maxlength="5">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cvv">CVV *</label>
+                                        <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group full-width">
+                                    <label for="cardName">Nom sur la carte *</label>
+                                    <input type="text" id="cardName" name="cardName" placeholder="Nom tel qu'il apparaît sur la carte">
+                                </div>
+                            </div>
+                            
+                            <div class="security-info">
+                                <div class="security-icon">🔒</div>
+                                <div class="security-text">
+                                    Vos informations de paiement sont sécurisées et cryptées. 
+                                    Nous ne stockons jamais vos données bancaires.
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Récapitulatif de commande -->
+                <div class="checkout-summary-section">
+                    <h2 class="section-title">Récapitulatif</h2>
+                    
+                    <div class="order-summary" id="orderSummary">
+                        <!-- Les articles seront chargés dynamiquement -->
+                    </div>
+                    
+                    <div class="total-section" id="totalSection">
+                        <!-- Les totaux seront calculés dynamiquement -->
+                    </div>
+                    
+                    <button type="submit" form="checkoutForm" class="place-order-btn" id="placeOrderBtn">
+                        Finaliser ma commande
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Overlay de chargement -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3>Traitement de votre commande...</h3>
+            <p>Veuillez patienter, nous finalisons votre achat.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Paris Encre</h3>
+                    <p>Votre spécialiste en imprimantes et consommables depuis plus de 10 ans. Nous proposons les meilleures marques au meilleur prix.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Nos Services</h3>
+                    <p><a href="#">Livraison rapide</a></p>
+                    <p><a href="#">Support technique</a></p>
+                    <p><a href="#">Garantie produits</a></p>
+                    <p><a href="#">Installation sur site</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Informations</h3>
+                    <p><a href="#">Conditions générales</a></p>
+                    <p><a href="#">Politique de confidentialité</a></p>
+                    <p><a href="#">Mentions légales</a></p>
+                    <p><a href="#">Contact</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>📧 contact@parisencre.fr</p>
+                    <p>📞 01 23 45 67 89</p>
+                    <p>📍 Paris, France</p>
+                    <p>🕒 Lun-Ven: 9h-18h</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Paris Encre. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        let selectedShipping = 'standard';
+        let selectedPayment = 'card';
+        
+        // Sélection du mode de livraison
+        function selectShipping(type) {
+            document.querySelectorAll('.shipping-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            selectedShipping = type;
+            updateOrderSummary();
+        }
+        
+        // Sélection du mode de paiement
+        function selectPayment(type) {
+            document.querySelectorAll('.payment-method').forEach(method => {
+                method.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            selectedPayment = type;
+            
+            // Afficher/masquer les détails de carte
+            const cardDetails = document.getElementById('cardDetails');
+            if (type === 'card') {
+                cardDetails.classList.add('show');
+            } else {
+                cardDetails.classList.remove('show');
+            }
+        }
+        
+        // Formatage automatique du numéro de carte
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+        
+        // Formatage de la date d'expiration
+        document.getElementById('expiryDate').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+        
+        // Formatage du CVV
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+        
+        // Mise à jour du récapitulatif de commande
+        function updateOrderSummary() {
+            const orderSummary = document.getElementById('orderSummary');
+            const totalSection = document.getElementById('totalSection');
+            
+            if (cart.length === 0) {
+                orderSummary.innerHTML = '<p>Votre panier est vide</p>';
+                return;
+            }
+            
+            let subtotal = 0;
+            let summaryHTML = '';
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
+                summaryHTML += `
+                    <div class="summary-item">
+                        <div class="summary-image">${item.image}</div>
+                        <div class="summary-details">
+                            <div class="summary-name">${item.name}</div>
+                            <div class="summary-quantity">Quantité: ${item.quantity}</div>
+                        </div>
+                        <div class="summary-price">${itemTotal.toFixed(2)} €</div>
+                    </div>
+                `;
+            });
+            
+            // Calculer les frais de livraison
+            let shippingCost = 0;
+            switch (selectedShipping) {
+                case 'standard':
+                    shippingCost = subtotal > 50 ? 0 : 5.99;
+                    break;
+                case 'express':
+                    shippingCost = 9.99;
+                    break;
+                case 'free':
+                    shippingCost = 0;
+                    break;
+            }
+            
+            // Appliquer les réductions
+            const appliedPromo = JSON.parse(localStorage.getItem('appliedPromo') || 'null');
+            let discountAmount = 0;
+            if (appliedPromo) {
+                discountAmount = subtotal * appliedPromo.discount;
+            }
+            
+            const total = subtotal - discountAmount + shippingCost;
+            
+            let totalHTML = `
+                <div class="total-row">
+                    <span>Sous-total</span>
+                    <span>${subtotal.toFixed(2)} €</span>
+                </div>
+            `;
+            
+            if (appliedPromo) {
+                totalHTML += `
+                    <div class="total-row">
+                        <span>${appliedPromo.description}</span>
+                        <span style="color: var(--accent);">-${discountAmount.toFixed(2)} €</span>
+                    </div>
+                `;
+            }
+            
+            totalHTML += `
+                <div class="total-row">
+                    <span>Livraison</span>
+                    <span>${shippingCost === 0 ? 'Gratuit' : shippingCost.toFixed(2) + ' €'}</span>
+                </div>
+                <div class="total-row final">
+                    <span>Total</span>
+                    <span>${total.toFixed(2)} €</span>
+                </div>
+            `;
+            
+            orderSummary.innerHTML = summaryHTML;
+            totalSection.innerHTML = totalHTML;
+        }
+        
+        // Traitement de la commande
+        function processCheckout() {
+            const form = document.getElementById('checkoutForm');
+            const formData = new FormData(form);
+            
+            // Validation des champs requis
+            const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'address', 'city', 'postalCode'];
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                const input = document.getElementById(field);
+                if (!input.value.trim()) {
+                    input.style.borderColor = 'var(--primary)';
+                    isValid = false;
+                } else {
+                    input.style.borderColor = 'var(--border-color)';
+                }
+            });
+            
+            // Validation spécifique pour le paiement par carte
+            if (selectedPayment === 'card') {
+                const cardFields = ['cardNumber', 'expiryDate', 'cvv', 'cardName'];
+                cardFields.forEach(field => {
+                    const input = document.getElementById(field);
+                    if (!input.value.trim()) {
+                        input.style.borderColor = 'var(--primary)';
+                        isValid = false;
+                    } else {
+                        input.style.borderColor = 'var(--border-color)';
+                    }
+                });
+            }
+            
+            if (!isValid) {
+                showAlert('Veuillez remplir tous les champs obligatoires', 'error');
+                return;
+            }
+            
+            // Afficher l'overlay de chargement
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            // Simuler le traitement de la commande
+            setTimeout(() => {
+                // Vider le panier
+                cart = [];
+                localStorage.setItem('cart', JSON.stringify(cart));
+                localStorage.removeItem('appliedPromo');
+                updateCartCount();
+                
+                // Masquer l'overlay
+                document.getElementById('loadingOverlay').style.display = 'none';
+                
+                // Afficher le succès
+                showAlert('Commande confirmée ! Vous recevrez un email de confirmation.', 'success');
+                
+                // Rediriger vers la page de compte
+                setTimeout(() => {
+                    window.location.href = 'account.html';
+                }, 2000);
+            }, 3000);
+        }
+        
+        // Pré-remplir les informations si l'utilisateur est connecté
+        function prefillUserInfo() {
+            if (currentUser) {
+                const nameParts = currentUser.name.split(' ');
+                document.getElementById('firstName').value = nameParts[0] || '';
+                document.getElementById('lastName').value = nameParts.slice(1).join(' ') || '';
+                document.getElementById('email').value = currentUser.email || '';
+            }
+        }
+        
+        // Initialisation de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Vérifier si l'utilisateur est connecté
+            if (!currentUser) {
+                showAlert('Veuillez vous connecter pour finaliser votre commande', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
+            
+            // Vérifier si le panier n'est pas vide
+            if (cart.length === 0) {
+                showAlert('Votre panier est vide', 'error');
+                setTimeout(() => {
+                    window.location.href = 'cart.html';
+                }, 2000);
+                return;
+            }
+            
+            prefillUserInfo();
+            updateOrderSummary();
+        });
