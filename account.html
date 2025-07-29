@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Compte - Paris Encre</title>
+    <meta name="description" content="Gérez votre compte Paris Encre, consultez vos commandes et vos informations personnelles.">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .account-page {
+            padding: 2rem 0;
+            min-height: 70vh;
+            background: linear-gradient(135deg, #f8f9fa, var(--light-bg));
+        }
+        
+        .account-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .account-header {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        
+        .account-title {
+            color: var(--secondary);
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .account-subtitle {
+            color: var(--text-color);
+            font-size: 1.1rem;
+        }
+        
+        .account-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+        
+        .account-sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+        
+        .account-main {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .sidebar-link:hover {
+            background: var(--light-bg);
+            color: var(--primary);
+        }
+        
+        .sidebar-link.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .sidebar-icon {
+            font-size: 1.2rem;
+        }
+        
+        .section-title {
+            color: var(--secondary);
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .account-section {
+            display: none;
+        }
+        
+        .account-section.active {
+            display: block;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-card {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            border-color: var(--primary);
+        }
+        
+        .info-card h3 {
+            color: var(--link);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        
+        .info-value {
+            color: var(--link);
+        }
+        
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .order-card {
+            background: var(--light-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .order-card:hover {
+            border-color: var(--primary);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .order-number {
+            font-weight: bold;
+            color: var(--link);
+            font-size: 1.1rem;
+        }
+        
+        .order-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .status-delivered {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .status-processing {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .status-shipped {
+            background: var(--link);
+            color: white;
+        }
+        
+        .order-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .order-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .order-detail-label {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+        
+        .order-detail-value {
+            font-weight: bold;
+            color: var(--link);
+        }
+        
+        .order-items {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .order-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .order-item-image {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .order-item-info {
+            flex: 1;
+        }
+        
+        .order-item-name {
+            font-weight: bold;
+            color: var(--link);
+            margin-bottom: 0.25rem;
+        }
+        
+        .order-item-details {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+        
+        .order-item-price {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .edit-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-group label {
+            font-weight: bold;
+            color: var(--link);
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: var(--border-color);
+            color: var(--text-color);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--light-bg);
+        }
+        
+        .btn-danger {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c41e3a;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--primary);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        
+        .logout-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border-color);
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .account-content {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .account-sidebar {
+                position: static;
+            }
+            
+            .sidebar-menu {
+                display: flex;
+                overflow-x: auto;
+                gap: 0.5rem;
+                padding-bottom: 0.5rem;
+            }
+            
+            .sidebar-item {
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+            
+            .sidebar-link {
+                white-space: nowrap;
+                padding: 0.75rem 1rem;
+            }
+            
+            .account-title {
+                font-size: 2rem;
+            }
+            
+            .info-grid,
+            .edit-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .order-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">Paris Encre</a>
+            
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Rechercher un produit, une marque..." id="searchInput">
+                <button class="search-btn" onclick="performSearch()">Rechercher</button>
+            </div>
+            
+            <div class="header-actions">
+                <a href="login.html" class="header-link" id="loginLink">Connexion</a>
+                <a href="account.html" class="header-link" id="accountLink" style="display: none;">Mon Compte</a>
+                <a href="cart.html" class="cart-icon">
+                    Panier
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation principale -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html">Accueil</a></li>
+                <li class="nav-item"><a href="category.html?cat=imprimantes">Imprimantes</a></li>
+                <li class="nav-item"><a href="category.html?cat=consommables">Consommables</a></li>
+                <li class="nav-item"><a href="category.html?cat=accessoires">Accessoires</a></li>
+                <li class="nav-item"><a href="category.html?cat=promotions">Promotions</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="account-page">
+        <div class="account-container">
+            <div class="account-header">
+                <h1 class="account-title" id="welcomeTitle">Bienvenue</h1>
+                <p class="account-subtitle">Gérez votre compte et consultez vos commandes</p>
+            </div>
+            
+            <div class="account-content">
+                <!-- Sidebar -->
+                <div class="account-sidebar">
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link active" onclick="showSection('dashboard')">
+                                <span class="sidebar-icon">📊</span>
+                                <span>Tableau de bord</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" onclick="showSection('orders')">
+                                <span class="sidebar-icon">📦</span>
+                                <span>Mes commandes</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" onclick="showSection('profile')">
+                                <span class="sidebar-icon">👤</span>
+                                <span>Mon profil</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" onclick="showSection('addresses')">
+                                <span class="sidebar-icon">📍</span>
+                                <span>Mes adresses</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" onclick="showSection('preferences')">
+                                <span class="sidebar-icon">⚙️</span>
+                                <span>Préférences</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Contenu principal -->
+                <div class="account-main">
+                    <!-- Tableau de bord -->
+                    <div class="account-section active" id="dashboard">
+                        <h2 class="section-title">Tableau de bord</h2>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">5</div>
+                                <div class="stat-label">Commandes totales</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">2</div>
+                                <div class="stat-label">En cours</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">347,85 €</div>
+                                <div class="stat-label">Total dépensé</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">15</div>
+                                <div class="stat-label">Points fidélité</div>
+                            </div>
+                        </div>
+                        
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <h3>Informations personnelles</h3>
+                                <div class="info-item">
+                                    <span class="info-label">Nom complet</span>
+                                    <span class="info-value" id="dashboardName">-</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Email</span>
+                                    <span class="info-value" id="dashboardEmail">-</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Membre depuis</span>
+                                    <span class="info-value">Décembre 2024</span>
+                                </div>
+                            </div>
+                            
+                            <div class="info-card">
+                                <h3>Dernière commande</h3>
+                                <div class="info-item">
+                                    <span class="info-label">Numéro</span>
+                                    <span class="info-value">#PE-2024-001</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Date</span>
+                                    <span class="info-value">15 Déc 2024</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Statut</span>
+                                    <span class="info-value">Livrée</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mes commandes -->
+                    <div class="account-section" id="orders">
+                        <h2 class="section-title">Mes commandes</h2>
+                        
+                        <div class="orders-list">
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div class="order-number">Commande #PE-2024-001</div>
+                                    <div class="order-status status-delivered">Livrée</div>
+                                </div>
+                                
+                                <div class="order-details">
+                                    <div class="order-detail">
+                                        <span class="order-detail-label">Date de commande</span>
+                                        <span class="order-detail-value">15 Décembre 2024</span>
+                                    </div>
+                                    <div class="order-detail">
+                                        <span class="order-detail-label">Total</span>
+                                        <span class="order-detail-value">89,99 €</span>
+                                    </div>
+                                    <div class="order-detail">
+                                        <span class="order-detail-label">Livraison</span>
+                                        <span class="order-detail-value">17 Décembre 2024</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="order-items">
+                                    <div class="order-item">
+                                        <div class="order-item-image">🖨️</div>
+                                        <div class="order-item-info">
+                                            <div class="order-item-name">Canon PIXMA TS3350</div>
+                                            <div class="order-item-details">Quantité: 1</div>
+                                        </div>
+                                        <div class="order-item-price">59,99 €</div>
+                                    </div>
+                                    <div class="order-item">
+                                        <div class="order-item-image">🎨</div>
+                                        <div class="order-item-info">
+                                            <div class="order-item-name">Cartouche Canon PG-545XL</div>
+                                            <div class="order-item-details">Quantité: 1</div>
+                                        </div>
+                                        <div class="order-item-price">24,99 €</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div class="order-number">Commande #PE-2024-002</div>
+                                    <div class="order-status status-processing">En préparation</div>
+                                </div>
+                                
+                                <div class="order-details">
+                                    <div class="order-detail">
+                                        <span class="order-detail-label">Date de commande</span>
+                                        <span class="order-detail-value">20 Décembre 2024</span>
+                                    </div>
+                                    <div class="order-detail">
+                                        <span class="order-detail-label">Total</span>
+                                        <span class="order-detail-value">199,99 €</span>
+                                    </div>
+                                    <div class="order-detail">
+                                        <span class="order-detail-label">Livraison estimée</span>
+                                        <span class="order-detail-value">23 Décembre 2024</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="order-items">
+                                    <div class="order-item">
+                                        <div class="order-item-image">🖨️</div>
+                                        <div class="order-item-info">
+                                            <div class="order-item-name">Epson EcoTank ET-2720</div>
+                                            <div class="order-item-details">Quantité: 1</div>
+                                        </div>
+                                        <div class="order-item-price">199,99 €</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mon profil -->
+                    <div class="account-section" id="profile">
+                        <h2 class="section-title">Mon profil</h2>
+                        
+                        <form class="edit-form" id="profileForm">
+                            <div class="form-group">
+                                <label for="profileFirstName">Prénom</label>
+                                <input type="text" id="profileFirstName" name="firstName" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileLastName">Nom</label>
+                                <input type="text" id="profileLastName" name="lastName" required>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="profileEmail">Adresse email</label>
+                                <input type="email" id="profileEmail" name="email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profilePhone">Téléphone</label>
+                                <input type="tel" id="profilePhone" name="phone">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileBirthdate">Date de naissance</label>
+                                <input type="date" id="profileBirthdate" name="birthdate">
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                                <button type="button" class="btn btn-secondary" onclick="resetProfileForm()">Annuler</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Mes adresses -->
+                    <div class="account-section" id="addresses">
+                        <h2 class="section-title">Mes adresses</h2>
+                        
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <h3>Adresse de livraison principale</h3>
+                                <div class="info-item">
+                                    <span class="info-label">Adresse</span>
+                                    <span class="info-value">123 Rue de la Paix</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Ville</span>
+                                    <span class="info-value">75001 Paris</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Pays</span>
+                                    <span class="info-value">France</span>
+                                </div>
+                            </div>
+                            
+                            <div class="info-card">
+                                <h3>Adresse de facturation</h3>
+                                <div class="info-item">
+                                    <span class="info-label">Adresse</span>
+                                    <span class="info-value">123 Rue de la Paix</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Ville</span>
+                                    <span class="info-value">75001 Paris</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Pays</span>
+                                    <span class="info-value">France</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn btn-primary">Modifier l'adresse</button>
+                            <button class="btn btn-secondary">Ajouter une adresse</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Préférences -->
+                    <div class="account-section" id="preferences">
+                        <h2 class="section-title">Préférences</h2>
+                        
+                        <form class="edit-form" id="preferencesForm">
+                            <div class="form-group full-width">
+                                <label for="newsletter">
+                                    <input type="checkbox" id="newsletter" name="newsletter" checked>
+                                    Recevoir la newsletter et les offres promotionnelles
+                                </label>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="smsNotifications">
+                                    <input type="checkbox" id="smsNotifications" name="smsNotifications">
+                                    Recevoir les notifications SMS pour les commandes
+                                </label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="language">Langue</label>
+                                <select id="language" name="language">
+                                    <option value="fr">Français</option>
+                                    <option value="en">English</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="currency">Devise</label>
+                                <select id="currency" name="currency">
+                                    <option value="EUR">Euro (€)</option>
+                                    <option value="USD">Dollar ($)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                            </div>
+                        </form>
+                        
+                        <div class="logout-section">
+                            <button class="btn btn-danger" onclick="logout()">Se déconnecter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Paris Encre</h3>
+                    <p>Votre spécialiste en imprimantes et consommables depuis plus de 10 ans. Nous proposons les meilleures marques au meilleur prix.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Nos Services</h3>
+                    <p><a href="#">Livraison rapide</a></p>
+                    <p><a href="#">Support technique</a></p>
+                    <p><a href="#">Garantie produits</a></p>
+                    <p><a href="#">Installation sur site</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Informations</h3>
+                    <p><a href="#">Conditions générales</a></p>
+                    <p><a href="#">Politique de confidentialité</a></p>
+                    <p><a href="#">Mentions légales</a></p>
+                    <p><a href="#">Contact</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>📧 contact@parisencre.fr</p>
+                    <p>📞 01 23 45 67 89</p>
+                    <p>📍 Paris, France</p>
+                    <p>🕒 Lun-Ven: 9h-18h</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Paris Encre. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Navigation entre les sections
+        function showSection(sectionId) {
+            // Masquer toutes les sections
+            document.querySelectorAll('.account-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Désactiver tous les liens de la sidebar
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Afficher la section sélectionnée
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Activer le lien correspondant
+            event.target.classList.add('active');
+        }
+        
+        // Initialiser les informations utilisateur
+        function initializeUserInfo() {
+            if (currentUser) {
+                document.getElementById('welcomeTitle').textContent = `Bienvenue ${currentUser.name}`;
+                document.getElementById('dashboardName').textContent = currentUser.name;
+                document.getElementById('dashboardEmail').textContent = currentUser.email;
+                
+                // Pré-remplir le formulaire de profil
+                const nameParts = currentUser.name.split(' ');
+                document.getElementById('profileFirstName').value = nameParts[0] || '';
+                document.getElementById('profileLastName').value = nameParts.slice(1).join(' ') || '';
+                document.getElementById('profileEmail').value = currentUser.email || '';
+            }
+        }
+        
+        // Sauvegarder le profil
+        function saveProfile() {
+            const firstName = document.getElementById('profileFirstName').value;
+            const lastName = document.getElementById('profileLastName').value;
+            const email = document.getElementById('profileEmail').value;
+            const phone = document.getElementById('profilePhone').value;
+            
+            if (firstName && lastName && email) {
+                // Mettre à jour les informations utilisateur
+                currentUser.name = `${firstName} ${lastName}`;
+                currentUser.email = email;
+                currentUser.phone = phone;
+                
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                // Mettre à jour l'affichage
+                initializeUserInfo();
+                checkUserSession();
+                
+                showAlert('Profil mis à jour avec succès !', 'success');
+            } else {
+                showAlert('Veuillez remplir tous les champs obligatoires', 'error');
+            }
+        }
+        
+        // Réinitialiser le formulaire de profil
+        function resetProfileForm() {
+            initializeUserInfo();
+            showAlert('Modifications annulées', 'info');
+        }
+        
+        // Sauvegarder les préférences
+        function savePreferences() {
+            const newsletter = document.getElementById('newsletter').checked;
+            const smsNotifications = document.getElementById('smsNotifications').checked;
+            const language = document.getElementById('language').value;
+            const currency = document.getElementById('currency').value;
+            
+            // Sauvegarder les préférences
+            const preferences = {
+                newsletter,
+                smsNotifications,
+                language,
+                currency
+            };
+            
+            localStorage.setItem('userPreferences', JSON.stringify(preferences));
+            showAlert('Préférences sauvegardées !', 'success');
+        }
+        
+        // Charger les préférences
+        function loadPreferences() {
+            const preferences = JSON.parse(localStorage.getItem('userPreferences') || '{}');
+            
+            if (preferences.newsletter !== undefined) {
+                document.getElementById('newsletter').checked = preferences.newsletter;
+            }
+            if (preferences.smsNotifications !== undefined) {
+                document.getElementById('smsNotifications').checked = preferences.smsNotifications;
+            }
+            if (preferences.language) {
+                document.getElementById('language').value = preferences.language;
+            }
+            if (preferences.currency) {
+                document.getElementById('currency').value = preferences.currency;
+            }
+        }
+        
+        // Initialisation de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Vérifier si l'utilisateur est connecté
+            if (!currentUser) {
+                showAlert('Veuillez vous connecter pour accéder à votre compte', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
+            
+            initializeUserInfo();
+            loadPreferences();
+            
+            // Gérer la soumission du formulaire de profil
+            document.getElementById('profileForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveProfile();
+            });
+            
+            // Gérer la soumission du formulaire de préférences
+            document.getElementById('preferencesForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                savePreferences();
+            });
+        });
+    </script>
+</body>
+</html>
