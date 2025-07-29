@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Paris Encre</title>
+    <meta name="description" content="Connectez-vous à votre compte Paris Encre pour accéder à vos commandes et profiter d'une expérience personnalisée.">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .auth-page {
+            padding: 4rem 0;
+            min-height: 70vh;
+            background: linear-gradient(135deg, var(--light-bg), white);
+        }
+        
+        .auth-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .auth-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .auth-title {
+            color: var(--secondary);
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-subtitle {
+            color: var(--text-color);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: left;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-group label {
+            font-weight: bold;
+            color: var(--link);
+            font-size: 1rem;
+        }
+        
+        .form-group input {
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(230, 41, 89, 0.1);
+        }
+        
+        .form-group input.error {
+            border-color: var(--primary);
+            background-color: #fff5f5;
+        }
+        
+        .auth-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            margin-top: 1rem;
+        }
+        
+        .auth-button:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .auth-button:disabled {
+            background: var(--border-color);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            color: var(--text-color);
+        }
+        
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+        
+        .auth-divider span {
+            padding: 0 1rem;
+            background: white;
+        }
+        
+        .auth-link {
+            color: var(--link);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        
+        .auth-link:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-color);
+        }
+        
+        .forgot-password {
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+        
+        .forgot-password a {
+            color: var(--link);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        
+        .social-login {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background: white;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .social-btn:hover {
+            border-color: var(--primary);
+            background: var(--light-bg);
+        }
+        
+        .benefits {
+            background: var(--light-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .benefits h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .benefits-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-color);
+        }
+        
+        .benefits-list li::before {
+            content: '✓';
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .auth-card {
+                padding: 2rem;
+                margin: 0 1rem;
+            }
+            
+            .auth-title {
+                font-size: 2rem;
+            }
+            
+            .benefits {
+                margin: 2rem 1rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">Paris Encre</a>
+            
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Rechercher un produit, une marque..." id="searchInput">
+                <button class="search-btn" onclick="performSearch()">Rechercher</button>
+            </div>
+            
+            <div class="header-actions">
+                <a href="login.html" class="header-link" id="loginLink">Connexion</a>
+                <a href="account.html" class="header-link" id="accountLink" style="display: none;">Mon Compte</a>
+                <a href="cart.html" class="cart-icon">
+                    Panier
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation principale -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html">Accueil</a></li>
+                <li class="nav-item"><a href="category.html?cat=imprimantes">Imprimantes</a></li>
+                <li class="nav-item"><a href="category.html?cat=consommables">Consommables</a></li>
+                <li class="nav-item"><a href="category.html?cat=accessoires">Accessoires</a></li>
+                <li class="nav-item"><a href="category.html?cat=promotions">Promotions</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="auth-page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h1 class="auth-title">Connexion</h1>
+                <p class="auth-subtitle">Accédez à votre compte Paris Encre</p>
+                
+                <form class="auth-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Adresse email</label>
+                        <input type="email" id="email" name="email" required 
+                               placeholder="votre@email.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" id="password" name="password" required 
+                               placeholder="Votre mot de passe">
+                        <div class="forgot-password">
+                            <a href="#" onclick="showForgotPassword()">Mot de passe oublié ?</a>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="auth-button" id="loginBtn">
+                        <span class="loading-spinner" id="loginSpinner"></span>
+                        Se connecter
+                    </button>
+                </form>
+                
+                <div class="auth-divider">
+                    <span>ou</span>
+                </div>
+                
+                <div class="social-login">
+                    <a href="#" class="social-btn" onclick="socialLogin('google')">
+                        <span>🔍</span>
+                        Continuer avec Google
+                    </a>
+                    <a href="#" class="social-btn" onclick="socialLogin('facebook')">
+                        <span>📘</span>
+                        Continuer avec Facebook
+                    </a>
+                </div>
+                
+                <div class="auth-footer">
+                    <p>Pas encore de compte ? 
+                        <a href="register.html" class="auth-link">Créer un compte</a>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Avantages de créer un compte -->
+            <div class="benefits">
+                <h3>Pourquoi créer un compte ?</h3>
+                <ul class="benefits-list">
+                    <li>Suivi de vos commandes en temps réel</li>
+                    <li>Historique de vos achats</li>
+                    <li>Offres exclusives et promotions</li>
+                    <li>Livraison plus rapide avec vos adresses sauvegardées</li>
+                    <li>Support client prioritaire</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Paris Encre</h3>
+                    <p>Votre spécialiste en imprimantes et consommables depuis plus de 10 ans. Nous proposons les meilleures marques au meilleur prix.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Nos Services</h3>
+                    <p><a href="#">Livraison rapide</a></p>
+                    <p><a href="#">Support technique</a></p>
+                    <p><a href="#">Garantie produits</a></p>
+                    <p><a href="#">Installation sur site</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Informations</h3>
+                    <p><a href="#">Conditions générales</a></p>
+                    <p><a href="#">Politique de confidentialité</a></p>
+                    <p><a href="#">Mentions légales</a></p>
+                    <p><a href="#">Contact</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>📧 contact@parisencre.fr</p>
+                    <p>📞 01 23 45 67 89</p>
+                    <p>📍 Paris, France</p>
+                    <p>🕒 Lun-Ven: 9h-18h</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Paris Encre. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Fonction pour afficher le spinner de chargement
+        function showLoading(show) {
+            const spinner = document.getElementById('loginSpinner');
+            const button = document.getElementById('loginBtn');
+            
+            if (show) {
+                spinner.style.display = 'inline-block';
+                button.disabled = true;
+                button.textContent = 'Connexion...';
+                button.prepend(spinner);
+            } else {
+                spinner.style.display = 'none';
+                button.disabled = false;
+                button.textContent = 'Se connecter';
+            }
+        }
+        
+        // Fonction pour la connexion sociale (simulation)
+        function socialLogin(provider) {
+            showAlert(`Connexion avec ${provider} en cours de développement`, 'info');
+        }
+        
+        // Fonction pour mot de passe oublié
+        function showForgotPassword() {
+            const email = prompt('Entrez votre adresse email pour recevoir un lien de réinitialisation :');
+            if (email && validateEmail(email)) {
+                showAlert('Un email de réinitialisation a été envoyé à votre adresse', 'success');
+            } else if (email) {
+                showAlert('Adresse email invalide', 'error');
+            }
+        }
+        
+        // Validation du formulaire en temps réel
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            
+            emailInput.addEventListener('blur', function() {
+                if (this.value && !validateEmail(this.value)) {
+                    this.classList.add('error');
+                    showAlert('Format d\'email invalide', 'error');
+                } else {
+                    this.classList.remove('error');
+                }
+            });
+            
+            passwordInput.addEventListener('blur', function() {
+                if (this.value && this.value.length < 6) {
+                    this.classList.add('error');
+                    showAlert('Le mot de passe doit contenir au moins 6 caractères', 'error');
+                } else {
+                    this.classList.remove('error');
+                }
+            });
+            
+            // Supprimer les classes d'erreur lors de la saisie
+            emailInput.addEventListener('input', function() {
+                this.classList.remove('error');
+            });
+            
+            passwordInput.addEventListener('input', function() {
+                this.classList.remove('error');
+            });
+        });
+        
+        // Surcharge de la fonction login pour ajouter l'animation
+        const originalLogin = window.login;
+        window.login = function(email, password) {
+            showLoading(true);
+            
+            // Simuler un délai de connexion
+            setTimeout(() => {
+                const result = originalLogin(email, password);
+                showLoading(false);
+                return result;
+            }, 1500);
+        };
+        
+        // Comptes de démonstration
+        function showDemoAccounts() {
+            showAlert('Comptes de démonstration:\n• admin@parisencre.fr / admin123\n• client@test.fr / test123', 'info');
+        }
+        
+        // Ajouter un lien pour les comptes de démo
+        document.addEventListener('DOMContentLoaded', function() {
+            const authFooter = document.querySelector('.auth-footer');
+            const demoLink = document.createElement('p');
+            demoLink.innerHTML = '<a href="#" onclick="showDemoAccounts()" class="auth-link" style="font-size: 0.9rem;">Voir les comptes de démonstration</a>';
+            demoLink.style.marginTop = '1rem';
+            demoLink.style.fontSize = '0.9rem';
+            authFooter.appendChild(demoLink);
+        });
+    </script>
+</body>
+</html>
